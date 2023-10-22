@@ -5,7 +5,7 @@
   tasks:
     - name: Execute Command on MikroTik Router
       community.general.mikrotik:
-        host: "{{ router }}"
+        host: "{{ inventory_hostname }}"
         username: support
         password: K0song!n
         command_string: "ip address print"
