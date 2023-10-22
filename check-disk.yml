@@ -1,11 +1,12 @@
 - name: Get Disk
   hosts: all
+  gather_facts: no
   become: yes
   tasks:
-    - name: Run a command and capture its output
+    - name: check disk
       shell: df -H | grep -vE "^Filesystem|tmpfs|cdrom|/auto/ripper|loop" | awk '{print $5 " " $6}'
       register: disk_space
     - name: Send the output with curl
       shell: |
-        curl -X POST -d "{{ disk_space.stdout }}" https://ntfy.mmi-pt.com/tes
+        curl -X POST  -H "Title: Low disk space alert on $(hostname)" -H "Tags: warning,cd"  -H "Priority: normal" -d "{{ disk_space.stdout }}" https://ntfy.mmi-pt.com/tes
       #delegate_to: localhost
