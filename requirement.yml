@@ -27,7 +27,12 @@
           name: curl
           state: present
         when: curl_check.failed and ansible_distribution == 'CentOS'
-
+      - name: Confirm curl installation
+        command: >
+          curl --version
+        register: docker-status
+        changed_when: false
+        
     - name: docker & docker compose
       block:
       - name: Check if Docker is installed
@@ -103,5 +108,5 @@
       register: hostname
     - name: Send the output with curl
       shell: |
-        curl -X POST -H "Title: ansible task for server {{ hostname.stdout }}" -d "curl,{{ docker-status.stdout }}" https://ntfy.mmi-pt.com/ansible
-      #delegate_to: localhost
+        curl -X POST -H "Title: ansible task for server {{ hostname.stdout }}" -d "status curl,{{ docker-status.stdout }}" https://ntfy.mmi-pt.com/ansible
+
