@@ -29,13 +29,15 @@
       - name: set root ssh password
         set_fact:
           ansible_password: "{{ ROOT_PASSWORD }}"
+      
+      - name: Replace permit root
+        command: sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+      
+      - name: Restart SSH Service
+        service:
+         name: sshd
+         state: restarted
 
-      - name: permit root
-        lineinfile:
-          path: /etc/ssh/sshd_config
-          regexp: '^PermitRootLogin'
-          line: 'PermitRootLogin yes'
-          state: present
 
     - name: change Root SSH Login
       remote_user: root
@@ -48,13 +50,5 @@
             responses:
               New password: "{{ ROOT_PASSWORD }}"
               Retype new password: "{{ ROOT_PASSWORD }}"
-      
-      - name: Replace permit root
-        command: sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
-      
-      - name: Restart SSH Service
-        service:
-         name: sshd
-         state: restarted
 
 
