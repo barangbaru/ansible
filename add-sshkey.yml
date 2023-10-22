@@ -6,7 +6,7 @@
     - name: Set Password for the Root User
       user:
         name: root
-        password: "{{ root_password | password_hash('sha512') }}"
+        password: "{K0song!n}"
       vars_prompt:
         - name: root_password
           prompt: "Enter the new root password:"
