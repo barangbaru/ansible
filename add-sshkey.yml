@@ -1,7 +1,6 @@
 ---
 - hosts: all
-  vars:
-    ROOT_PASSWORD: K0song!n
+
   gather_facts: no
   tasks:
 
