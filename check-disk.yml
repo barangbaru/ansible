@@ -1,19 +1,19 @@
-- name: Check Disk Space
-  hosts: all
-  become: yes
+- hosts: all
+  vars:
+     topic: "admin-alerts"
   tasks:
-    - name: Run curl command
-      command: curl -I https://ntfy.mmi-pt.com/alert
-      register: curl_output
+    - name: "Notify ntfy that we're done (topic obtained from play var)"
+      ntfy:
+           msg: "deployment on {{ inventory_hostname }} is complete. 🐄 "
 
-    - name: Check disk space
-      command: df -h
-      register: disk_space
-
-    - name: Display curl output
-      debug:
-        var: curl_output.stdout_lines
-
-    - name: Display disk space
-      debug:
-        var: disk_space.stdout_lines
+    - name: "different topic"
+      ntfy:
+            msg: "that's a wrap"
+            topic: "admin-alerts"
+            attrs:
+               tags: [ rotating_light, heavy_check_mark ]
+               priority: 4
+               actions:
+                  - action: view
+                    label: "Open Mastodon"
+                    url: "https://ntfy.mmi-pt.com/tes"
