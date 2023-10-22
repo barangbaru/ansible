@@ -1,1 +1,27 @@
+- name: Install server requirement
+  hosts: all
+  become: yes
+  tasks:
+    - name: Check if curl is installed (Debian-based systems)
+      command: dpkg -l | grep curl
+      ignore_errors: yes
+      register: curl_check
+      changed_when: false
 
+    - name: Check if curl is installed (Red Hat-based systems)
+      command: rpm -q curl
+      ignore_errors: yes
+      register: curl_check
+      changed_when: false
+
+    - name: Install curl (Debian-based systems)
+      apt:
+        name: curl
+        state: present
+      when: curl_check.failed and ansible_distribution == 'Ubuntu'
+
+    - name: Install curl (Red Hat-based systems)
+      yum:
+        name: curl
+        state: present
+      when: curl_check.failed and ansible_distribution == 'CentOS'
