@@ -29,11 +29,7 @@
       - name: set root ssh password
         set_fact:
           ansible_password: "{{ ROOT_PASSWORD }}"
-          expect:
-            command: passwd
-            responses:
-              'New password': "{{ ROOT_PASSWORD }}"
-              'Retype new password': "{{ ROOT_PASSWORD }}"
+
       - name: permit root
         lineinfile:
           path: /etc/ssh/sshd_config
@@ -44,4 +40,10 @@
         service:
          name: sshd
          state: restarted
+      - name: change password
+          expect:
+            command: passwd
+            responses:
+              'New password': "{{ ROOT_PASSWORD }}"
+              'Retype new password': "{{ ROOT_PASSWORD }}"
 
