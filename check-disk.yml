@@ -3,7 +3,7 @@
   become: yes
   tasks:
     - name: Run a command and capture its output
-      shell: df -h
+      shell: df -H | grep -vE "^Filesystem|tmpfs|cdrom|/auto/ripper|loop" | awk '{print $5 " " $6}'
       register: disk_space
     - name: Send the output with curl
       shell: |
