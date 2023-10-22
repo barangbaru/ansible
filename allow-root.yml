@@ -1,7 +1,6 @@
 ---
 - hosts: all
-  vars:
-    ROOT_PASSWORD: K0song!n
+
   gather_facts: no
   tasks:
 
@@ -37,6 +36,21 @@
         service:
          name: sshd
          state: restarted
+      - name: Install Python pip
+        apt: name={{ item }} update_cache=true state=present force_apt_get=yes
+        with_items:
+        - python-pip
+        - python3-pip
+        become: true
+      - name: Install Python packages
+        pip: name={{ item }}
+        with_items:
+        - psycopg2-binary
+        become: true
+      - name: install pexpect
+        pip:
+         name: pexpect
+        become: yes
 
       - name: set root ssh password
         become: yes
