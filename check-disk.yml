@@ -1,11 +1,19 @@
-- name: List all disks
+- name: Check Disk Space
   hosts: all
   become: yes
   tasks:
-    - name: Get disk information
-      ansible.builtin.shell: lsblk
-      register: disk_info
+    - name: Run curl command
+      command: curl -I https://ntfy.mmi-pt.com/alert
+      register: curl_output
 
-    - name: Print disk information
+    - name: Check disk space
+      command: df -h
+      register: disk_space
+
+    - name: Display curl output
       debug:
-        var: disk_info.stdout_lines
+        var: curl_output.stdout_lines
+
+    - name: Display disk space
+      debug:
+        var: disk_space.stdout_lines
