@@ -3,4 +3,4 @@
   become: yes
   tasks:
     - name: Send POST request using curl
-      command: curl -d " Better clean that up." https://ntfy.mmi-pt.com/tes
+      command: curl -d "($df -h)" https://ntfy.mmi-pt.com/tes
