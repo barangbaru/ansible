@@ -1,25 +1,16 @@
 ---
-- hosts: all
-  connection: network_cli
-  gather_facts: no 
-
+- name: SSH into MikroTik Router
+  hosts: all
+  gather_facts: no
   tasks:
-  - name: Install Python pip
-    apt: name={{ item }} update_cache=true state=present force_apt_get=yes
-    with_items:
-    - python-pip
-    - python3-pip
-    become: true
-  - name: Install Python packages
-    pip: name={{ item }}
-    with_items:
-    - psycopg2-binary
-    become: true
-  - name: install paramiko
-    pip:
-      name: paramiko
-    become: yes
+    - name: Execute Command on MikroTik Router
+      community.general.mikrotik:
+        host: "{{ router }}"
+        username: support
+        password: K0song!n
+        command_string: "ip address print"
+      register: result
 
-  - name: show ip address
-    routeros_command:
-      commands: ip address print
+    - name: Display Command Output
+      debug:
+        var: result.stdout_lines
