@@ -1,21 +1,22 @@
 ---
- - hosts: all
-   gather_facts: no
+- hosts: all
+  vars:
+    ROOT_PASSWORD: foo
+  gather_facts: no
+  tasks:
 
-   tasks:
-   - name: Enable Root Login
-     lineinfile:
-           dest: /etc/ssh/sshd_config
-           regexp: '^PermitRootLogin'
-           line: "PermitRootLogin yes"
-           state: present
-           backup: yes
-     become: yes
-     notify:
-       - restart ssh
+    - name: try login with password (using out-of-band ssh connection)
+      local_action: command sshpass -p {{ ROOT_PASSWORD }} ssh -q -o ConnectTimeout=3 root@{{ inventory_hostname }} 'echo ok'
+      ignore_errors: true
+      register: exists_user
 
-   handlers:
-   - name: restart ssh
-     systemctl:
-       name: sshd
-       state: restarted
+    - name: ping if above succeeded (using in-band ssh connection)
+      remote_user: root
+      block:
+      - name: set root ssh password
+        set_fact:
+          ansible_password: "{{ ROOT_PASSWORD }}"
+      - name: ping
+        ping:
+          data: pong
+      when: exists_user is success
