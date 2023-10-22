@@ -1,25 +1,21 @@
 ---
-- name: Enable Root Login
-  hosts: all
-  become: yes  # Use privilege escalation to become root or another privileged user
-  tasks:
-    - name: Set Password for the Root User
-      user:
-        name: root
-        password: "{K0song!n}"
-      vars_prompt:
-        - name: root_password
-          prompt: "Enter the new root password:"
-          private: yes
+ - hosts: all
+   gather_facts: no
 
-    - name: Enable Root SSH Login
-      lineinfile:
-        path: /etc/ssh/sshd_config
-        regexp: '^PermitRootLogin'
-        line: 'PermitRootLogin yes'
-        state: present
+   tasks:
+   - name: Enable Root Login
+     lineinfile:
+           dest: /etc/ssh/sshd_config
+           regexp: '^PermitRootLogin'
+           line: "PermitRootLogin yes"
+           state: present
+           backup: yes
+     become: yes
+     notify:
+       - restart ssh
 
-    - name: Restart SSH Service
-      service:
-        name: sshd
-        state: restarted
+   handlers:
+   - name: restart ssh
+     systemctl:
+       name: sshd
+       state: restarted
