@@ -29,10 +29,11 @@
     - name: Update package cache
       apt:
         update_cache: yes
-      when: ansible_os_family == 'Debian'  # For Debian-based systems
+      tags:
+        - docker
 
-    - name: Install required packages
-      package:
+    - name: Install prerequisites for Docker
+      apt:
         name: "{{ item }}"
         state: present
       loop:
@@ -40,51 +41,34 @@
         - ca-certificates
         - curl
         - software-properties-common
-      when: ansible_os_family == 'Debian'
+      tags:
+        - docker
 
     - name: Add Docker GPG key
       apt_key:
-        url: https://download.docker.com/linux/debian/gpg
-      when: ansible_os_family == 'Debian'
+        url: https://download.docker.com/linux/ubuntu/gpg
+        state: present
+      tags:
+        - docker
 
-    - name: Add Docker APT repository
+    - name: Add Docker repository
       apt_repository:
-        repo: deb [arch=amd64] https://download.docker.com/linux/debian {{ ansible_distribution_release }} stable
-      when: ansible_os_family == 'Debian'
-
-    - name: Update package cache after adding Docker repository
-      apt:
-        update_cache: yes
-      when: ansible_os_family == 'Debian'
+        repo: "deb [arch=amd64] https://download.docker.com/linux/ubuntu {{ ansible_distribution_release }} stable"
+        state: present
+      tags:
+        - docker
 
     - name: Install Docker
       apt:
         name: docker-ce
         state: present
-      when: ansible_os_family == 'Debian'
+      tags:
+        - docker
 
     - name: Start and enable Docker service
-      service:
+      systemd:
         name: docker
-        state: started
         enabled: yes
-
-    - name: Add the user to the docker group
-      user:
-        name: your_username  # Replace with your username
-        groups: docker
-        append: yes
-      become: yes  # Make sure you have sudo privileges
-
-    - name: Restart the SSH service
-      service:
-        name: ssh
-        state: restarted
-
-  handlers:
-    - name: Reboot if required
-      reboot:
-      async: 0
-      poll: 0
-      ignore_errors: yes
-      when: ansible_reboot_required | default(false)
+        state: started
+      tags:
+        - docker
