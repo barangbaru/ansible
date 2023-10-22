@@ -37,6 +37,10 @@
         service:
          name: sshd
          state: restarted
+      - name: install pexpect
+        pip:
+         name: pexpect
+        become: yes
 
       - name: set root ssh password
         become: yes
