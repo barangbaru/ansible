@@ -2,10 +2,6 @@
   vars:
      topic: "admin-alerts"
   tasks:
-    - name: "Notify ntfy that we're done (topic obtained from play var)"
-      ntfy:
-           msg: "deployment on {{ inventory_hostname }} is complete. 🐄 "
-
     - name: "different topic"
       ntfy:
             msg: "that's a wrap"
