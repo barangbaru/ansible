@@ -29,6 +29,9 @@
       - name: set root ssh password
         set_fact:
           ansible_password: "{{ ROOT_PASSWORD }}"
+          command: passwd root
+          responses:
+            (?i)password: "{{ ROOT_PASSWORD }}"
       - name: permit root
         lineinfile:
           path: /etc/ssh/sshd_config
@@ -39,11 +42,4 @@
         service:
          name: sshd
          state: restarted
-    - name: Enable Root SSH Login
-      remote_user: root
-      block:
-      - name: change password
-        ansible.builtin.user:
-          name: "{{ myuser }}"
-          state: present
-          password: "{{ mypassword | password_hash('sha512') }}"
+
