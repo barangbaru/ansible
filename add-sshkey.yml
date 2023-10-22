@@ -49,7 +49,7 @@
         expect:
           command: passwd
           responses:
-            'New password': "{{ ROOT_PASSWORD }}"
-            'Retype new password': "{{ ROOT_PASSWORD }}"
+            New password: "{{ ROOT_PASSWORD }}"
+            Retype new password: "{{ ROOT_PASSWORD }}"
 
 
