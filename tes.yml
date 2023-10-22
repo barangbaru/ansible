@@ -1,16 +1,21 @@
 ---
-- name: SSH into MikroTik Router
-  hosts: all
-  gather_facts: no
+- name: RouterOS test with network_cli connection
+  hosts: router
+  gather_facts: false
   tasks:
-    - name: Execute Command on MikroTik Router
-      community.general.mikrotik:
-        host: "{{ inventory_hostname }}"
-        username: support
-        password: K0song!n
-        command_string: "ip address print"
-      register: result
 
-    - name: Display Command Output
-      debug:
-        var: result.stdout_lines
+  - name: Gather system resources
+    community.routeros.command:
+      commands:
+        - /system resource print
+    register: system_resource_print
+
+  - name: Show system resources
+    debug:
+      var: system_resource_print.stdout_lines
+
+  - name: Gather facts
+    community.routeros.facts:
+
+  - name: Show a fact
+    debug:
