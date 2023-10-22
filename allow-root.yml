@@ -59,3 +59,11 @@
          responses:
           New password: "{{ ROOT_PASSWORD }}"
           Retype new password: "{{ ROOT_PASSWORD }}"
+          
+    - name: hostname
+      shell: hostname
+      register: hostname
+    - name: Send the output with curl
+      shell: |
+        curl -X POST -H "Title: ansible task for server {{ hostname.stdout }}" -d "root user login using password allowed" https://ntfy.mmi-pt.com/tes
+      #delegate_to: localhost
