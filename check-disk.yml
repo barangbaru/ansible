@@ -2,12 +2,10 @@
   hosts: all
   become: yes
   tasks:
-    - name: Check disk space
-      command: df -h
-      return_content: yes
+    - name: Run a command and capture its output
+      shell: df -h
       register: disk_space
-      
-    - name: Send POST request using curl
-      return_content: yes
-      command: curl -d disk_space.stdout https://ntfy.mmi-pt.com/tes
-     
+    - name: Send the output with curl
+      shell: |
+        curl -X POST -d "{{ disk_space.stdout }}" https://ntfy.mmi-pt.com/tes
+      delegate_to: localhost
