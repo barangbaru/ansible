@@ -26,10 +26,6 @@
         state: present
       when: curl_check.failed and ansible_distribution == 'CentOS'
 
-- name: Check and Install Docker on Ubuntu
-  hosts: your_ubuntu_server
-  become: yes
-  tasks:
     - name: Check if Docker is installed
       command: dpkg -l | grep -E '^ii' | grep -q docker
       register: docker_installed
