@@ -35,6 +35,7 @@
         command: sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
       
       - name: Restart SSH Service
+        become: yes
         service:
          name: sshd
          state: restarted
