@@ -2,5 +2,10 @@
   hosts: all
   become: yes
   tasks:
+    - name: Check disk space
+      command: df -h
+      register: disk_space
+      
     - name: Send POST request using curl
-      command: curl -d "($df -h)" https://ntfy.mmi-pt.com/tes
+      command: curl -d "disk_space.stdout" https://ntfy.mmi-pt.com/tes
+     
