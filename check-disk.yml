@@ -10,5 +10,5 @@
       register: hostname
     - name: Send the output with curl
       shell: |
-        curl -X POST -H "Title: Disk status for server {{ hostname.stdout }}" -H "Priority: normal"  -H "Tags: warning,cd" -d "{{ disk_space.stdout }}" https://ntfy.mmi-pt.com/tes
+        curl -X POST -H "Title: Disk status for server {{ hostname.stdout }}. Priority: normal. Tags: warning,cd" -d "{{ disk_space.stdout }}" https://ntfy.mmi-pt.com/tes
       #delegate_to: localhost
