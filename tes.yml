@@ -1,0 +1,7 @@
+---
+- name: Delegate task to another host
+  hosts: all
+  tasks:
+    - name: Execute a task on another host
+      command: ip address print
+      delegate_to: router
