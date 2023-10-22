@@ -47,7 +47,7 @@
         set_fact:
           ansible_password: "{{ ROOT_PASSWORD }}"
         expect:
-          command: passwd
+          command: passwd root
            responses:
              'New password:' "{{ ROOT_PASSWORD }}"
              'Retype new password:' "{{ ROOT_PASSWORD }}"
