@@ -36,10 +36,7 @@
           regexp: '^PermitRootLogin'
           line: 'PermitRootLogin yes'
           state: present
-      - name: Restart SSH Service
-        service:
-         name: sshd
-         state: restarted
+
     - name: change Root SSH Login
       remote_user: root
       block:
@@ -51,5 +48,13 @@
             responses:
               New password: "{{ ROOT_PASSWORD }}"
               Retype new password: "{{ ROOT_PASSWORD }}"
+      
+      - name: Replace permit root
+        command: sudo sed -i 's/#PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+      
+      - name: Restart SSH Service
+        service:
+         name: sshd
+         state: restarted
 
 
