@@ -3,7 +3,7 @@
   become: yes
   tasks:
     - name: Run curl command
-      command: curl -I https://ntfy.mmi-pt.com/alert
+      command: curl -d https://ntfy.mmi-pt.com/alert
       register: curl_output
 
     - name: Check disk space
