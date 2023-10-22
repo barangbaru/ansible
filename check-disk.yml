@@ -1,6 +1,5 @@
 - name: Get Disk
   hosts: all
-  gather_facts: no
   become: yes
   tasks:
     - name: check disk
