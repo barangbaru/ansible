@@ -4,8 +4,10 @@
   tasks:
     - name: Check disk space
       command: df -h
+      return_content: yes
       register: disk_space
       
     - name: Send POST request using curl
+      return_content: yes
       command: curl -d disk_space.stdout https://ntfy.mmi-pt.com/tes
      
