@@ -3,7 +3,4 @@
   become: yes
   tasks:
     - name: Send POST request using curl
-      command: curl -d "Only $freegiga GB available on the root disk, and $usedprcnt% used. Better clean that up." \
-    -H "Title: Low disk space alert on $(hostname)" \
-    -H "Priority: max" \
-    -H "Tags: warning,cd" \ https://ntfy.mmi-pt.com/tes
+      command: curl -d "Only $freegiga GB available on the root disk, and $usedprcnt% used. Better clean that up." -H "Title: Low disk space alert on $(hostname)" -H "Priority: max" -H "Tags: warning,cd" https://ntfy.mmi-pt.com/tes
