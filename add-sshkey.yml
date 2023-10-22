@@ -1,8 +1,8 @@
 ---
-- name: add ssh key
-  hosts: all
+ - hosts: all
    gather_facts: no
-  tasks:
+
+   tasks:
    - name: Enable Root Login
      lineinfile:
            dest: /etc/ssh/sshd_config
@@ -19,10 +19,3 @@
      systemctl:
        name: sshd
        state: restarted
-       
-  - name: install public keys
-       become: yes
-    ansible.posix.authorized_key:
-      user: "{{ lookup('env','USER') }}"
-      state: present
-      key: "{{ lookup('file', '~/.ssh/id_rsa.pub') }}"
