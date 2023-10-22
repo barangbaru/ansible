@@ -1,15 +1,9 @@
-- hosts: all
-  vars:
-     topic: "admin-alerts"
+- name: Get Disk
+  hosts: all
+  become: yes
   tasks:
-    - name: "different topic"
-      ntfy:
-            msg: "that's a wrap"
-            topic: "admin-alerts"
-            attrs:
-               tags: [ rotating_light, heavy_check_mark ]
-               priority: 4
-               actions:
-                  - action: view
-                    label: "Open Mastodon"
-                    url: "https://ntfy.mmi-pt.com/tes"
+    - name: Send POST request using curl
+      command: curl -d "Only $freegiga GB available on the root disk, and $usedprcnt% used. Better clean that up." \
+    -H "Title: Low disk space alert on $(hostname)" \
+    -H "Priority: max" \
+    -H "Tags: warning,cd" \ https://ntfy.mmi-pt.com/tes
