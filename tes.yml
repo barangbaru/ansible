@@ -4,4 +4,4 @@
   tasks:
     - name: Execute a task on another host
       command: ip address print
-      delegate_to: router
+      delegate_to: 10.150.10.254
