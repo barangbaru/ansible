@@ -114,7 +114,7 @@
         shell: |
           curl -X POST -H "Title: ansible task for server {{ hostname.stdout }}" -d "status {{ dockercomposestatus.stdout }}" https://ntfy.mmi-pt.com/ansible
 
-    - name: netstat
+    - name: Install netstat
       block:
       - name: Update package cache
         apt:
