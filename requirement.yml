@@ -113,5 +113,14 @@
       - name: Send the output with curl
         shell: |
           curl -X POST -H "Title: ansible task for server {{ hostname.stdout }}" -d "status {{ dockercomposestatus.stdout }}" https://ntfy.mmi-pt.com/ansible
-        
 
+    - name: netstat
+      block:
+      - name: Update package cache
+        apt:
+          update_cache: yes
+
+      - name: Install net-tools
+        apt:
+          name: net-tools
+          state: present
